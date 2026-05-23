@@ -27,7 +27,7 @@ async function loadEnvFile(path: string): Promise<void> {
   }
 }
 
-await loadEnvFile(join(homedir(), "scripts", ".env"));
+await loadEnvFile(join(import.meta.dir, "..", ".env"));
 
 const ANKI_PROFILE = process.env.ANKI_PROFILE ?? "User 1";
 const ANKI_MEDIA_DIR = join(

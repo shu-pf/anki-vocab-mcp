@@ -20,7 +20,7 @@
 
 ## 環境変数
 
-`~/scripts/.env` に以下を記述します (起動時に読み込まれます)。
+プロジェクトルートの `.env` に以下を記述します (起動時に `<repo>/.env` から読み込まれます)。`.env.example` をコピーして使うのが楽です。
 
 ```env
 AZURE_SPEECH_KEY=...
@@ -43,6 +43,7 @@ ELEVENLABS_VOICE_ID=cjVigY5qzO86Huf0OWal
 git clone https://github.com/shu-pf/anki-vocab-mcp.git
 cd anki-vocab-mcp
 bun install
+cp .env.example .env   # 値を埋める
 ```
 
 ## Claude Desktop での設定例
