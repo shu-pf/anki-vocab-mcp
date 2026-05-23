@@ -39,7 +39,7 @@ const ANKI_MEDIA_DIR = join(
   "collection.media",
 );
 const ANKI_CONNECT_URL = "http://localhost:8765";
-const DEFAULT_DECK = process.env.ANKI_DECK ?? "英語学習";
+const DEFAULT_DECK = process.env.ANKI_DECK ?? "English Vocabulary";
 
 const AZURE_SPEECH_KEY = process.env.AZURE_SPEECH_KEY ?? "";
 const AZURE_SPEECH_REGION = process.env.AZURE_SPEECH_REGION ?? "japaneast";
@@ -142,7 +142,7 @@ async function addAnkiCard(
       Front: `${word}<br>[sound:${wordAudio}]`,
       Back: `${meaning}<br><br><i>${example}</i><br>[sound:${sentenceAudio}]`,
     },
-    tags: ["英語学習"],
+    tags: ["english-vocab"],
   };
 
   const res = await fetch(ANKI_CONNECT_URL, {

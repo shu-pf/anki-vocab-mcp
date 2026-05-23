@@ -36,7 +36,7 @@ ELEVENLABS_VOICE_ID=cjVigY5qzO86Huf0OWal
 | 変数 | デフォルト | 説明 |
 | --- | --- | --- |
 | `ANKI_PROFILE` | `User 1` | Anki のプロファイル名 |
-| `ANKI_DECK` | `英語学習` | 既定のデッキ名 |
+| `ANKI_DECK` | `English Vocabulary` | 既定のデッキ名 |
 | `AZURE_VOICE` | `en-US-SteffanNeural` | Azure TTS の voice |
 
 ## セットアップ

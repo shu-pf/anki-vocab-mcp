@@ -36,7 +36,7 @@ Optional:
 | Variable | Default | Description |
 | --- | --- | --- |
 | `ANKI_PROFILE` | `User 1` | Anki profile name |
-| `ANKI_DECK` | `英語学習` | Default deck name |
+| `ANKI_DECK` | `English Vocabulary` | Default deck name |
 | `AZURE_VOICE` | `en-US-SteffanNeural` | Azure TTS voice |
 
 ## Setup
