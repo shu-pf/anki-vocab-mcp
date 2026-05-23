@@ -42,7 +42,7 @@ const ANKI_CONNECT_URL = "http://localhost:8765";
 const DEFAULT_DECK = process.env.ANKI_DECK ?? "English Vocabulary";
 
 const AZURE_SPEECH_KEY = process.env.AZURE_SPEECH_KEY ?? "";
-const AZURE_SPEECH_REGION = process.env.AZURE_SPEECH_REGION ?? "japaneast";
+const AZURE_SPEECH_REGION = process.env.AZURE_SPEECH_REGION ?? "eastus";
 const AZURE_VOICE = process.env.AZURE_VOICE ?? "en-US-SteffanNeural";
 
 const ELEVENLABS_API_KEY = process.env.ELEVENLABS_API_KEY ?? "";

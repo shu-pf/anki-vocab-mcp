@@ -26,7 +26,7 @@ Place a `.env` at the project root (it is loaded from `<repo>/.env` at startup).
 
 ```env
 AZURE_SPEECH_KEY=...
-AZURE_SPEECH_REGION=japaneast
+AZURE_SPEECH_REGION=eastus
 ELEVENLABS_API_KEY=...
 ELEVENLABS_VOICE_ID=cjVigY5qzO86Huf0OWal
 ```
