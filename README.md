@@ -74,6 +74,41 @@ cp .env.example .env   # 値を埋める
 }
 ```
 
+## Claude Code での設定例
+
+### 1. MCP サーバーを登録
+
+```bash
+claude mcp add -s user anki-vocab -- bun /absolute/path/to/anki-vocab-mcp/src/index.ts
+```
+
+`bun` が PATH に無い環境 (GUI ランチャーなど) では絶対パスでの指定を推奨します。確認は `claude mcp list` で `anki-vocab: ... - ✓ Connected` が出ればOK。
+
+### 2. (任意) スラッシュコマンドを用意
+
+`~/.claude/commands/anki.md` に以下を保存すると `/anki <英単語>` 1発でカード作成までできます。意味と例文は Claude が推論して埋めます。
+
+```markdown
+---
+description: 英単語を Anki カードとして自動生成する (意味と例文は推論)
+argument-hint: <英単語>
+allowed-tools: mcp__anki-vocab__create_anki_card
+---
+
+英単語「$ARGUMENTS」を Anki カードとして追加します。
+
+手順:
+1. 与えられた単語の最も一般的な日本語訳を簡潔に1つ考える
+2. その単語の用法が分かる、自然で実用的な英語例文を1つ作る (10〜20語程度)
+3. MCP ツール `create_anki_card` を呼び出してカードを追加する
+   - `word`: $ARGUMENTS
+   - `meaning`: 手順1で考えた日本語訳
+   - `example`: 手順2で考えた例文
+4. 結果 (Note ID を含む) を1〜2行で報告する
+```
+
+使用例: `/anki ephemeral`
+
 ## 開発
 
 ```bash
