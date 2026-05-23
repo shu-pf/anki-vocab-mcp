@@ -1,26 +1,28 @@
 # anki-vocab-mcp
 
-英単語を Anki カードとして自動生成する MCP サーバー。単語音声を Azure TTS、例文音声を ElevenLabs で生成し、AnkiConnect 経由でカードを追加します。
+**English** | [日本語](./README.ja.md)
 
-## 特長
+MCP server that turns an English word into a fully-formed Anki card on the fly: Azure TTS for the word audio, ElevenLabs for the example sentence audio, and AnkiConnect to add the card.
 
-- MCP の 1 ツール `create_anki_card(word, meaning, example, deck?)` でカード作成が完結
-- 単語音声: Azure TTS (`en-US-SteffanNeural`, `rate=slow`) で MP3
-- 例文音声: ElevenLabs (`eleven_turbo_v2_5`) で MP3
-- カード形式:
-  - 表: 単語 + 単語音声
-  - 裏: 日本語訳 + 例文 (イタリック) + 例文音声
+## Features
 
-## 必要なもの
+- A single MCP tool, `create_anki_card(word, meaning, example, deck?)`, handles the whole flow
+- Word audio: Azure TTS (`en-US-SteffanNeural`, `rate=slow`) as MP3
+- Sentence audio: ElevenLabs (`eleven_turbo_v2_5`) as MP3
+- Card layout:
+  - Front: word + word audio
+  - Back: Japanese meaning + example sentence (italic) + sentence audio
 
-- [Bun](https://bun.sh/) 1.3 以降
-- [Anki](https://apps.ankiweb.net/) + [AnkiConnect](https://ankiweb.net/shared/info/2055492159) アドオン (`http://localhost:8765` で待ち受け)
-- Azure Speech Services の API キー
-- ElevenLabs の API キー
+## Requirements
 
-## 環境変数
+- [Bun](https://bun.sh/) 1.3+
+- [Anki](https://apps.ankiweb.net/) with the [AnkiConnect](https://ankiweb.net/shared/info/2055492159) add-on (listening on `http://localhost:8765`)
+- An Azure Speech Services API key
+- An ElevenLabs API key
 
-プロジェクトルートの `.env` に以下を記述します (起動時に `<repo>/.env` から読み込まれます)。`.env.example` をコピーして使うのが楽です。
+## Environment variables
+
+Place a `.env` at the project root (it is loaded from `<repo>/.env` at startup). The easiest path is to copy `.env.example`.
 
 ```env
 AZURE_SPEECH_KEY=...
@@ -29,26 +31,26 @@ ELEVENLABS_API_KEY=...
 ELEVENLABS_VOICE_ID=cjVigY5qzO86Huf0OWal
 ```
 
-オプション:
+Optional:
 
-| 変数 | デフォルト | 説明 |
+| Variable | Default | Description |
 | --- | --- | --- |
-| `ANKI_PROFILE` | `User 1` | Anki のプロファイル名 |
-| `ANKI_DECK` | `英語学習` | 既定のデッキ名 |
-| `AZURE_VOICE` | `en-US-SteffanNeural` | Azure TTS の voice |
+| `ANKI_PROFILE` | `User 1` | Anki profile name |
+| `ANKI_DECK` | `英語学習` | Default deck name |
+| `AZURE_VOICE` | `en-US-SteffanNeural` | Azure TTS voice |
 
-## セットアップ
+## Setup
 
 ```bash
 git clone https://github.com/shu-pf/anki-vocab-mcp.git
 cd anki-vocab-mcp
 bun install
-cp .env.example .env   # 値を埋める
+cp .env.example .env   # fill in the values
 ```
 
-## Claude Desktop での設定例
+## Claude Desktop example
 
-`claude_desktop_config.json` に追加:
+Add to `claude_desktop_config.json`:
 
 ```json
 {
@@ -61,7 +63,7 @@ cp .env.example .env   # 値を埋める
 }
 ```
 
-もしくは bunx で直接 (グローバルインストール不要):
+Or run it straight from GitHub via `bunx` (no global install needed):
 
 ```json
 {
@@ -74,48 +76,48 @@ cp .env.example .env   # 値を埋める
 }
 ```
 
-## Claude Code での設定例
+## Claude Code example
 
-### 1. MCP サーバーを登録
+### 1. Register the MCP server
 
 ```bash
 claude mcp add -s user anki-vocab -- bun /absolute/path/to/anki-vocab-mcp/src/index.ts
 ```
 
-`bun` が PATH に無い環境 (GUI ランチャーなど) では絶対パスでの指定を推奨します。確認は `claude mcp list` で `anki-vocab: ... - ✓ Connected` が出ればOK。
+Prefer absolute paths for `bun` when launching from a GUI runner that doesn't inherit your shell PATH. Confirm with `claude mcp list` — you should see `anki-vocab: ... - ✓ Connected`.
 
-### 2. (任意) スラッシュコマンドを用意
+### 2. (Optional) Slash command
 
-`~/.claude/commands/anki.md` に以下を保存すると `/anki <英単語>` 1発でカード作成までできます。意味と例文は Claude が推論して埋めます。
+Save the following to `~/.claude/commands/anki.md` and you can create a card with `/anki <word>`. The meaning and example sentence are inferred by Claude.
 
 ```markdown
 ---
-description: 英単語を Anki カードとして自動生成する (意味と例文は推論)
-argument-hint: <英単語>
+description: Generate an Anki card from an English word (meaning & example are inferred)
+argument-hint: <english word>
 allowed-tools: mcp__anki-vocab__create_anki_card
 ---
 
-英単語「$ARGUMENTS」を Anki カードとして追加します。
+Add the English word "$ARGUMENTS" as an Anki card.
 
-手順:
-1. 与えられた単語の最も一般的な日本語訳を簡潔に1つ考える
-2. その単語の用法が分かる、自然で実用的な英語例文を1つ作る (10〜20語程度)
-3. MCP ツール `create_anki_card` を呼び出してカードを追加する
+Steps:
+1. Pick the most common Japanese translation (concise, one entry)
+2. Compose a natural, practical English example sentence (about 10–20 words)
+3. Call the `create_anki_card` MCP tool with:
    - `word`: $ARGUMENTS
-   - `meaning`: 手順1で考えた日本語訳
-   - `example`: 手順2で考えた例文
-4. 結果 (Note ID を含む) を1〜2行で報告する
+   - `meaning`: the translation from step 1
+   - `example`: the sentence from step 2
+4. Report the result (including the Note ID) in 1–2 lines
 ```
 
-使用例: `/anki ephemeral`
+Usage: `/anki ephemeral`
 
-## 開発
+## Development
 
 ```bash
-bun --watch src/index.ts   # ウォッチ起動
-bun run typecheck          # 型チェック
+bun --watch src/index.ts   # watch mode
+bun run typecheck          # type-check
 ```
 
-## ライセンス
+## License
 
 MIT
