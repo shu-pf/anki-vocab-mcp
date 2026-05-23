@@ -1,0 +1,25 @@
+{
+  "name": "anki-vocab-mcp",
+  "version": "0.1.0",
+  "description": "MCP server for creating Anki vocabulary cards with Azure TTS + ElevenLabs",
+  "type": "module",
+  "module": "src/index.ts",
+  "bin": {
+    "anki-vocab-mcp": "src/index.ts"
+  },
+  "files": [
+    "src"
+  ],
+  "scripts": {
+    "start": "bun src/index.ts",
+    "dev": "bun --watch src/index.ts",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.0.0"
+  },
+  "devDependencies": {
+    "@types/bun": "latest",
+    "typescript": "^5.0.0"
+  }
+}
