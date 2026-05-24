@@ -68,9 +68,7 @@ async function generateWordAudio(word: string): Promise<string> {
 
   const token = await getAzureToken();
   const ssml = `<speak version='1.0' xml:lang='en-US'>
-    <voice name='${AZURE_VOICE}'>
-      <prosody rate='slow'>${word}</prosody>
-    </voice>
+    <voice name='${AZURE_VOICE}'>${word}</voice>
   </speak>`;
 
   const res = await fetch(
